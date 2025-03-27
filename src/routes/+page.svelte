@@ -4,6 +4,7 @@
 
   let device: Device | null = null;
   let isReady = false;
+  $: isReadyReactive = isReady;
   let isCalling = false;
   let email = "";
 
@@ -81,7 +82,7 @@
     <h1>Trainiere realistische Verkaufsgespräche mit Talktra</h1>
     <p class="subtitle">Klicke jetzt auf <strong>„Anrufen“</strong> und trainiere deine Verkaufsgespräche in Echtzeit.</p>
 
-    {#if isReady}
+    {#if isReadyReactive}
       {#if !isCalling}
         <button on:click={startVoIPCall}>📞 Anrufen</button>
       {:else}
