@@ -2,19 +2,21 @@
   import { Device } from '@twilio/voice-sdk';
 
   let device: Device | null = null;
-  let isReady = false;
   let isCalling = false;
+  let isInitialized = false;
   let email = "";
 
   const startVoIPCall = async () => {
-    if (!device) {
-      try {
-        console.log("🎯 Lade Token...");
+    try {
+      // Initialisiere Gerät nur beim ersten Klick
+      if (!device && !isInitialized) {
+        console.log("🔄 Initialisiere Gerät...");
         const res = await fetch('https://salestrainer-test-8773dee9bf25.herokuapp.com/token?identity=browser-user');
         const { token } = await res.json();
         console.log("🔐 Token empfangen:", token);
 
         device = new Device(token, { debug: true });
+        isInitialized = true;
 
         device.on('error', (err) => {
           console.error('❌ Twilio Fehler:', err);
@@ -25,21 +27,17 @@
           console.log('📴 Anruf beendet');
           isCalling = false;
         });
-
-        // Statt auf 'ready' zu warten:
-        isReady = true;
-        console.log('✅ Gerät sofort als bereit markiert.');
-
-      } catch (error) {
-        console.error('❌ Fehler beim Initialisieren:', error);
       }
-    }
 
-    if (device) {
-      console.log("🚀 Starte VoIP-Anruf...");
-      const connection = device.connect();
-      isCalling = true;
-      console.log("🚀 Verbindung gestartet:", connection);
+      if (device) {
+        console.log("📞 Starte Anruf...");
+        const connection = device.connect();
+        isCalling = true;
+        console.log("✅ Verbindung gestartet:", connection);
+      }
+
+    } catch (error) {
+      console.error("❌ Fehler beim Starten des Anrufs:", error);
     }
   };
 
@@ -65,6 +63,7 @@
     }
   };
 </script>
+
 
 
 <!-- ✨ Layout -->
