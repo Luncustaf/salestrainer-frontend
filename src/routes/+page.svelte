@@ -1,47 +1,44 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import { Device } from '@twilio/voice-sdk';
 
   let device: Device | null = null;
   let isReady = false;
-  $: isReadyReactive = isReady;
   let isCalling = false;
   let email = "";
 
-  onMount(async () => {
-    try {
-      const res = await fetch('https://salestrainer-test-8773dee9bf25.herokuapp.com/token?identity=browser-user');
-      const { token } = await res.json();
-      console.log("🔐 Token empfangen:", token);
+  const startVoIPCall = async () => {
+    if (!device) {
+      try {
+        const res = await fetch('https://salestrainer-test-8773dee9bf25.herokuapp.com/token?identity=browser-user');
+        const { token } = await res.json();
+        console.log("🔐 Token empfangen:", token);
 
-      device = new Device(token, { debug: true });
+        device = new Device(token, { debug: true });
 
-      device.on('ready', () => {
-        console.log('✅ Gerät registriert – Verbindung wird aufgebaut...');
-        isReady = true;
-      });
+        device.on('ready', () => {
+          console.log('✅ Gerät registriert – Verbindung wird aufgebaut...');
+          isReady = true;
+        });
 
-      device.on('error', (err) => {
-        console.error('❌ Twilio Fehler:', err);
-        alert('Twilio Fehler: ' + err.message);
-      });
+        device.on('error', (err) => {
+          console.error('❌ Twilio Fehler:', err);
+          alert('Twilio Fehler: ' + err.message);
+        });
 
-      device.on('disconnect', () => {
-        console.log('📴 Anruf beendet');
-        isCalling = false;
-      });
-    } catch (error) {
-      console.error('❌ Fehler beim Initialisieren:', error);
+        device.on('disconnect', () => {
+          console.log('📴 Anruf beendet');
+          isCalling = false;
+        });
+      } catch (error) {
+        console.error('❌ Fehler beim Initialisieren:', error);
+        return;
+      }
     }
-  });
 
-  const startVoIPCall = () => {
-    if (device) {
-      console.log("🚀 Starte VoIP-Anruf...");
-      const connection = device.connect();
-      isCalling = true;
-      console.log("🚀 Verbindung gestartet:", connection);
-    }
+    console.log("🚀 Starte VoIP-Anruf...");
+    const connection = device.connect();
+    isCalling = true;
+    console.log("🚀 Verbindung gestartet:", connection);
   };
 
   const hangUp = () => {
@@ -82,7 +79,7 @@
     <h1>Trainiere realistische Verkaufsgespräche mit Talktra</h1>
     <p class="subtitle">Klicke jetzt auf <strong>„Anrufen“</strong> und trainiere deine Verkaufsgespräche in Echtzeit.</p>
 
-    {#if isReadyReactive}
+    {#if isReady}
       {#if !isCalling}
         <button on:click={startVoIPCall}>📞 Anrufen</button>
       {:else}
@@ -205,6 +202,9 @@
     padding: 0.5rem 1rem;
     font-size: 0.95rem;
     background-color: #222;
+    color: white;
+    border: none;
+    border-radius: 6px;
   }
 
   footer {
