@@ -104,7 +104,6 @@
     <div>© Talktra – 2025</div>
   </footer>
 </div>
-
 <style>
   body {
     margin: 0;
@@ -193,7 +192,8 @@
   }
 
   .email-box input {
-    padding: 0.6rem 1rem;
+    height: 48px;
+    padding: 0 1rem;
     border-radius: 8px;
     border: 1px solid #ccc;
     font-size: 1rem;
@@ -202,12 +202,15 @@
   }
 
   .email-box button {
-    padding: 0.6rem 1rem;
+    height: 48px;
+    padding: 0 1.2rem;
     font-size: 1rem;
     background-color: #222;
     color: white;
     border: none;
     border-radius: 8px;
+    display: flex;
+    align-items: center;
   }
 
   .email-box button:hover {
@@ -229,4 +232,5 @@
     margin: 0 0.4rem;
   }
 </style>
+
 
