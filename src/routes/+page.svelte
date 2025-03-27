@@ -81,15 +81,12 @@
     <h1>Trainiere realistische Verkaufsgespräche mit Talktra</h1>
     <p class="subtitle">Klicke jetzt auf <strong>„Anrufen“</strong> und trainiere deine Verkaufsgespräche in Echtzeit.</p>
 
-    {#if isReady}
-      {#if !isCalling}
-        <button on:click={startVoIPCall}>📞 Anrufen</button>
-      {:else}
-        <button on:click={hangUp}>📴 Auflegen</button>
-      {/if}
-    {:else}
-      <p class="loading">🔄 Gerät wird initialisiert...</p>
-    {/if}
+{#if !isCalling}
+  <button on:click={startVoIPCall}>📞 Anrufen</button>
+{:else}
+  <button on:click={hangUp}>📴 Auflegen</button>
+{/if}
+
 
     <div class="email-section">
       <p>📧 Du möchtest die Auswertung als E-Mail erhalten?</p>
