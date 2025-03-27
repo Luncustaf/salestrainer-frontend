@@ -146,7 +146,7 @@
   }
 
   h1 {
-    font-size: 1.8rem;
+    font-size: 2rem;
     margin-bottom: 0.5rem;
   }
 
@@ -160,11 +160,13 @@
     background-color: #007aff;
     border: none;
     color: white;
-    padding: 0.7rem 1.5rem;
+    padding: 0.6rem 1.4rem;
     font-size: 1rem;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     margin-top: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: background 0.2s;
   }
 
   button:hover {
@@ -184,26 +186,32 @@
   .email-box {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-top: 0.5rem;
     gap: 0.5rem;
     flex-wrap: wrap;
   }
 
   .email-box input {
-    padding: 0.5rem;
-    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
     border: 1px solid #ccc;
     font-size: 1rem;
-    width: 240px;
+    width: 280px;
+    box-sizing: border-box;
   }
 
   .email-box button {
-    padding: 0.5rem 1rem;
-    font-size: 0.95rem;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
     background-color: #222;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
+  }
+
+  .email-box button:hover {
+    background-color: #444;
   }
 
   footer {
@@ -221,3 +229,4 @@
     margin: 0 0.4rem;
   }
 </style>
+
