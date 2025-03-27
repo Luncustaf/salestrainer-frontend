@@ -9,16 +9,12 @@
   const startVoIPCall = async () => {
     if (!device) {
       try {
+        console.log("🎯 Lade Token...");
         const res = await fetch('https://salestrainer-test-8773dee9bf25.herokuapp.com/token?identity=browser-user');
         const { token } = await res.json();
         console.log("🔐 Token empfangen:", token);
 
         device = new Device(token, { debug: true });
-
-        device.on('ready', () => {
-          console.log('✅ Gerät registriert – Verbindung wird aufgebaut...');
-          isReady = true;
-        });
 
         device.on('error', (err) => {
           console.error('❌ Twilio Fehler:', err);
@@ -29,16 +25,22 @@
           console.log('📴 Anruf beendet');
           isCalling = false;
         });
+
+        // Statt auf 'ready' zu warten:
+        isReady = true;
+        console.log('✅ Gerät sofort als bereit markiert.');
+
       } catch (error) {
         console.error('❌ Fehler beim Initialisieren:', error);
-        return;
       }
     }
 
-    console.log("🚀 Starte VoIP-Anruf...");
-    const connection = device.connect();
-    isCalling = true;
-    console.log("🚀 Verbindung gestartet:", connection);
+    if (device) {
+      console.log("🚀 Starte VoIP-Anruf...");
+      const connection = device.connect();
+      isCalling = true;
+      console.log("🚀 Verbindung gestartet:", connection);
+    }
   };
 
   const hangUp = () => {
@@ -63,6 +65,7 @@
     }
   };
 </script>
+
 
 <!-- ✨ Layout -->
 <div class="wrapper">
