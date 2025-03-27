@@ -1,68 +1,51 @@
 <script lang="ts">
-  import { Device } from '@twilio/voice-sdk';
   import { onMount } from 'svelte';
+  import { Device } from '@twilio/voice-sdk';
 
   let device: Device | null = null;
-  let isCalling = false;
   let isReady = false;
-  let email = '';
+  let isCalling = false;
+  let email = "";
 
-  const saveEmail = async () => {
-    try {
-      const res = await fetch('https://salestrainer-test-8773dee9bf25.herokuapp.com/email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, identity: "browser-user" })
-      });
-      const data = await res.json();
-      console.log("📧 E-Mail gespeichert:", data);
-    } catch (err) {
-      console.error("❌ Fehler beim Speichern der E-Mail:", err);
-    }
-  };
+  const identity = "browser-user";
 
   const startVoIPCall = async () => {
+    console.log("🚀 Starte VoIP-Anruf...");
+
     try {
-      console.log("🚀 Starte VoIP-Anruf...");
-      const res = await fetch('https://salestrainer-test-8773dee9bf25.herokuapp.com/token?identity=browser-user');
-      const data = await res.json();
-      const token = data.token;
+      const res = await fetch(`https://salestrainer-test-8773dee9bf25.herokuapp.com/token?identity=${identity}`);
+      const { token } = await res.json();
+      console.log("🔐 Token empfangen:", token);
 
-      if (!token) {
-        console.error("❌ Kein Token erhalten");
-        return;
-      }
+      const emailRes = await fetch("https://salestrainer-test-8773dee9bf25.herokuapp.com/email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, identity })
+      });
+      const emailData = await emailRes.json();
+      console.log("📧 E-Mail gespeichert:", emailData);
 
-      console.log("🔐 Token empfangen:", token.slice(0, 20) + "...");
       device = new Device(token, { debug: true });
 
-      device.on('registered', () => {
+      device.on("ready", () => {
         console.log("✅ Gerät registriert – Verbindung wird aufgebaut...");
-        const connection = device!.connect();
-        isCalling = true;
-        console.log("🚀 Verbindung gestartet:", connection);
-      });
-
-      device.on('ready', () => {
-        console.log("📞 Twilio-Gerät bereit");
         isReady = true;
+        const connection = device!.connect();
+        console.log("🚀 Verbindung gestartet:", connection);
+        isCalling = true;
       });
 
-      device.on('connect', () => {
-        console.log("🔊 Verbindung steht");
+      device.on("error", (err) => {
+        console.error("❌ Twilio Fehler:", err);
+        alert("Twilio Fehler: " + err.message);
       });
 
-      device.on('disconnect', () => {
-        console.log("📴 Verbindung beendet");
+      device.on("disconnect", () => {
+        console.log("📴 Verbindung beendet.");
         isCalling = false;
       });
 
-      device.on('error', (err) => {
-        console.error("❌ Twilio Fehler:", err);
-        alert("Fehler: " + err.message);
-      });
-
-      await device.register(); // ← WICHTIG
+      device.initialize();
     } catch (error) {
       console.error("❌ Fehler beim Starten des Anrufs:", error);
     }
@@ -78,54 +61,107 @@
 </script>
 
 <main>
-  <h1>🎙️ VoIP-Anruf aus dem Browser</h1>
+  <nav>
+    <div class="logo">talktra</div>
+    <div class="menu">
+      <span>Demo</span>
+      <span>Kontakt</span>
+      <span>Über uns</span>
+    </div>
+  </nav>
 
-  <label>
-    Deine E-Mail:
-    <input bind:value={email} placeholder="z. B. max@example.com" />
-  </label>
+  <section class="centered">
+    <h1>🎙️ VoIP-Anruf aus dem Browser</h1>
 
-  <button on:click={saveEmail}>💾 E-Mail speichern</button>
+    <input
+      type="email"
+      bind:value={email}
+      placeholder="Deine E-Mail für Feedback"
+    />
 
-  {#if !isCalling}
-    <button on:click={startVoIPCall}>📞 Anrufen</button>
-  {:else}
-    <button on:click={hangUp}>📴 Auflegen</button>
-  {/if}
+    {#if !isCalling}
+      <button on:click={startVoIPCall}>📞 Anrufen</button>
+    {:else}
+      <button on:click={hangUp} class="hangup">📴 Auflegen</button>
+    {/if}
+  </section>
 </main>
 
 <style>
-  main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 3rem;
-    font-family: sans-serif;
+  :global(body) {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f7f9fc;
   }
 
-  label, input, button {
-    margin-top: 1rem;
-    font-size: 1rem;
+  nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background-color: #1e1e2f;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  .logo {
+    font-weight: bold;
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+  }
+
+  .menu span {
+    margin-left: 1.5rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: #ccc;
+    transition: color 0.2s ease;
+  }
+
+  .menu span:hover {
+    color: white;
+  }
+
+  .centered {
+    text-align: center;
+    padding-top: 6rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
   }
 
   input {
-    padding: 0.5rem;
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 250px;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    width: 300px;
+    max-width: 90%;
   }
 
   button {
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
     background-color: #007aff;
     color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    transition: background 0.2s ease-in-out;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
   }
 
   button:hover {
     background-color: #005bb5;
+  }
+
+  .hangup {
+    background-color: #e94343;
+  }
+
+  .hangup:hover {
+    background-color: #c73232;
   }
 </style>
