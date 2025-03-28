@@ -15,6 +15,7 @@
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
+        console.log('Redirecting to:', `${window.location.origin}/auth-success`);
         redirectTo: `${window.location.origin}/auth-success`
       }
     });
