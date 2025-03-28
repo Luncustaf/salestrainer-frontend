@@ -20,7 +20,7 @@
     });
     if (error) alert(error.message);
   };
-  console.log('Redirecting to:', `${window.location.origin}/auth-success`);
+
 </script>
 
 <main>
