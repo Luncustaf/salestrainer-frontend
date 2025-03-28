@@ -4,44 +4,103 @@
 
   let email = '';
   let password = '';
+  let passwordConfirm = '';
+  let errorMessage = '';
 
-  const signUpWithEmail = async () => {
-    const { error } = await supabase.auth.signUp({
+  const signUp = async () => {
+    if (password !== passwordConfirm) {
+      errorMessage = 'Die Passwörter stimmen nicht überein!';
+      return;
+    }
+
+    const { user, error } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/`
-      }
     });
 
-    if (!error) {
-      alert('Bitte bestätige deine E-Mail-Adresse!');
-      goto('/');
+    if (error) {
+      errorMessage = error.message;
     } else {
-      alert(error.message);
+      goto('/login'); // Weiterleitung nach erfolgreicher Registrierung
     }
-  };
-
-  const signUpWithGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/`
-      }
-    });
-
-    if (error) alert(error.message);
   };
 </script>
 
 <main>
   <h1>Registrieren</h1>
-  <div class="email-box">
-    <input type="email" bind:value={email} placeholder="E-Mail" />
-    <input type="password" bind:value={password} placeholder="Passwort" />
-  </div>
-  <div class="email-box">
-    <button on:click={signUpWithEmail}>🆕 Registrieren</button>
-    <button on:click={signUpWithGoogle}>🔓 Mit Google registrieren</button>
-  </div>
+
+  <form on:submit|preventDefault={signUp}>
+    <div>
+      <label for="email">E-Mail</label>
+      <input type="email" id="email" bind:value={email} placeholder="E-Mail" required />
+    </div>
+
+    <div>
+      <label for="password">Passwort</label>
+      <input type="password" id="password" bind:value={password} placeholder="Passwort" required />
+    </div>
+
+    <div>
+      <label for="passwordConfirm">Passwort bestätigen</label>
+      <input
+        type="password"
+        id="passwordConfirm"
+        bind:value={passwordConfirm}
+        placeholder="Passwort bestätigen"
+        required
+      />
+    </div>
+
+    {#if errorMessage}
+      <div style="color: red;">{errorMessage}</div>
+    {/if}
+
+    <button type="submit">Registrieren</button>
+  </form>
+
+  <p>Bereits ein Konto? <a href="/login">Login</a></p>
 </main>
+
+<style>
+  main {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  form div {
+    margin-bottom: 1rem;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.7rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+
+  button {
+    background-color: #007aff;
+    color: white;
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+  }
+
+  button:hover {
+    background-color: #005bb5;
+  }
+
+  p {
+    margin-top: 1rem;
+  }
+</style>
