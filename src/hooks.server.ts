@@ -1,5 +1,3 @@
-// src/hooks.server.ts
-
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { dev } from '$app/environment';
 import type { Handle } from '@sveltejs/kit';
@@ -11,7 +9,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     secure: !dev
   };
 
-  event.locals.supabase = createServerClient(
+  const supabase = createServerClient(
     PUBLIC_SUPABASE_URL,
     PUBLIC_SUPABASE_ANON_KEY,
     {
@@ -29,6 +27,14 @@ export const handle: Handle = async ({ event, resolve }) => {
     }
   );
 
-  const response = await resolve(event);
-  return response;
+  event.locals.supabase = supabase;
+
+  // ⬇️ Session holen und auf event.locals speichern
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
+
+  event.locals.session = session;
+
+  return resolve(event);
 };
