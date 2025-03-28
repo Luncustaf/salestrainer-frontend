@@ -1,5 +1,20 @@
 <script>
   import "../app.css"; // falls du globale Styles verwendest
+  import { supabase } from '$lib/supabaseClient';
+  import { onMount } from 'svelte';
+
+  let session;
+
+  onMount(async () => {
+    // Session beim Laden holen
+    const { data, error } = await supabase.auth.getSession();
+    session = data?.session;
+  });
+
+  const logout = async () => {
+    await supabase.auth.signOut();
+    goto('/login');
+  };
 </script>
 
 <div class="wrapper">
