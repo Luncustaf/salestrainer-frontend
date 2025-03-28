@@ -1,15 +1,27 @@
 // src/hooks.server.ts
 
-import { createClient } from '@supabase/supabase-js';
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import type { Handle } from '@sveltejs/kit';
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 
-const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY);
-
 export const handle: Handle = async ({ event, resolve }) => {
-  // Falls du später user-Session an event.locals anhängen willst:
-  // const { data: { user } } = await supabase.auth.getUser();
-  // event.locals.user = user;
+  event.locals.supabase = createServerClient(
+    PUBLIC_SUPABASE_URL,
+    PUBLIC_SUPABASE_ANON_KEY,
+    {
+      cookies: {
+        get(name) {
+          return event.cookies.get(name);
+        },
+        set(name, value, options) {
+          event.cookies.set(name, value, options as CookieOptions);
+        },
+        remove(name, options) {
+          event.cookies.delete(name, options as CookieOptions);
+        }
+      }
+    }
+  );
 
   return resolve(event);
 };
