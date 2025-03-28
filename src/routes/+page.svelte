@@ -68,16 +68,6 @@
 
 <!-- ✨ Layout -->
 <div class="wrapper">
-  <header>
-    <div class="logo">TalkTra</div>
-    <nav>
-      <a href="#">Demo</a>
-      <a href="#">Kontakt</a>
-      <a href="#">Über uns</a>
-      <!-- Logout-Link -->
-      <a href="/logout">🚪 Logout</a>
-    </nav>
-  </header>
 
   <main>
     <h1>Trainiere realistische Verkaufsgespräche mit Talktra</h1>
@@ -98,14 +88,8 @@
       </div>
     </div>
   </main>
-
-  <footer>
-    <div>
-      <a href="#">Impressum</a> · <a href="#">Datenschutz</a>
-    </div>
-    <div>© Talktra – 2025</div>
-  </footer>
 </div>
+
 <style>
   body {
     margin: 0;
