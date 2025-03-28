@@ -2,7 +2,6 @@
   import { supabase } from '$lib/supabaseClient';
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
-  console.log("✅ auth-success route loaded");
 
   onMount(async () => {
     // Versuche sofort, die Session zu bekommen

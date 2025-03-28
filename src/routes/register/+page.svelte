@@ -24,6 +24,19 @@
       goto('/login');
     }
   };
+
+  const registerWithGoogle = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: 'https://salestrainer.vercel.app/auth-success' // Die URL, wohin der Nutzer nach der erfolgreichen Authentifizierung umgeleitet wird
+      }
+    });
+
+    if (error) {
+      alert(error.message);
+    }
+  };
 </script>
 
 <main>
@@ -34,6 +47,8 @@
     <input type="password" bind:value={passwordConfirm} placeholder="Passwort bestätigen" />
   </div>
   <button class="register-btn" on:click={registerUser}>🔐 Registrieren</button>
+  <p>Oder</p>
+  <button class="google-btn" on:click={registerWithGoogle}>🔓 Mit Google registrieren</button>
   <p>Bereits ein Konto? <a href="/login">Login</a></p>
 </main>
 
@@ -58,8 +73,8 @@
     border-radius: 8px;
   }
 
-  .register-btn {
-    background-color: #444;
+  .register-btn, .google-btn {
+    background-color: #333;
     color: white;
     border: none;
     padding: 0.8rem 1.5rem;
@@ -69,8 +84,8 @@
     margin-top: 1rem;
   }
 
-  .register-btn:hover {
-    background-color: #333;
+  .register-btn:hover, .google-btn:hover {
+    background-color: #444;
   }
 
   p {
