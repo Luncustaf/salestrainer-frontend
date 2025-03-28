@@ -1,47 +1,23 @@
-<script lang="ts">
-  export let data;
-  const session = data.session;  // Session holen, um zu prüfen, ob der Benutzer eingeloggt ist
-</script>
-
 <header>
   <div class="logo">TalkTra</div>
   <nav>
-
-    {#if session}
-      <!-- Wenn der Benutzer eingeloggt ist, zeige Logout an -->
-	  <a href="/demo">Demo</a>
-      <a href="/kontakt">Kontakt</a>
-      <a href="/about">Über uns</a>
-      <a href="/logout">📕 Logout</a>
-    {:else}
-      <!-- Wenn der Benutzer nicht eingeloggt ist, zeige Login und Registrieren an -->
-      <a href="/login">Login</a>
-    {/if}
+    <a href="/contact">Kontakt</a>
+    <a href="/login">Login</a>
   </nav>
 </header>
 
 <main>
-  <slot></slot> <!-- Der Content der Seite wird hier eingefügt -->
+  <slot />
 </main>
-
-<footer>
-  Impressum - Datenschutz
-  <p>© TalkTra – 2025</p>
-</footer>
 
 <style>
   header {
-    background: #1c1b2e;
+    background-color: #333;
     color: white;
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-
-  .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
   }
 
   nav a {
@@ -50,12 +26,11 @@
     text-decoration: none;
   }
 
-  footer {
-    padding: 1rem;
-    text-align: center;
-    font-size: 0.85rem;
-    color: #888;
-    border-top: 1px solid #eee;
-    background: #fafafa;
+  nav a:hover {
+    text-decoration: underline;
+  }
+
+  main {
+    padding-top: 60px; /* Platz für fixierten Header, falls nötig */
   }
 </style>
