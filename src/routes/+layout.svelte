@@ -25,11 +25,9 @@
     <a href="/contact">Kontakt</a>
     <a href="/about">Über uns</a>
     {#if session}
-      <a href="/profile">Profil</a>
       <a href="#" on:click={logout}>Logout</a>
     {:else}
       <a href="/login">Login</a>
-      <a href="/register">Registrieren</a>
     {/if}
   </nav>
 </header>
