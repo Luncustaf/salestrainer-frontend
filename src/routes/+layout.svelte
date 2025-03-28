@@ -16,7 +16,6 @@
     {:else}
       <!-- Wenn der Benutzer nicht eingeloggt ist, zeige Login und Registrieren an -->
       <a href="/login">Login</a>
-      <a href="/register">Registrieren</a>
     {/if}
   </nav>
 </header>
