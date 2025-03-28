@@ -69,11 +69,13 @@
 <!-- ✨ Layout -->
 <div class="wrapper">
   <header>
-    <div class="logo">talktra</div>
+    <div class="logo">TalkTra</div>
     <nav>
       <a href="#">Demo</a>
       <a href="#">Kontakt</a>
       <a href="#">Über uns</a>
+      <!-- Logout-Link -->
+      <a href="/logout">🚪 Logout</a>
     </nav>
   </header>
 

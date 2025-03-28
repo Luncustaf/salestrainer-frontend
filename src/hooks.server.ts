@@ -1,26 +1,33 @@
+// src/hooks.server.ts
+import { createClient } from '@supabase/ssr';
 import type { Handle } from '@sveltejs/kit';
-/*import * as auth from '$lib/server/auth.js';
 
-const handleAuth: Handle = async ({ event, resolve }) => {
-	const sessionToken = event.cookies.get(auth.sessionCookieName);
+export const handle: Handle = async ({ event, resolve }) => {
+  const supabase = createClient(
+    import.meta.env.VITE_SUPABASE_URL,
+    import.meta.env.VITE_SUPABASE_ANON_KEY,
+    {
+      cookies: {
+        get(name) {
+          return event.cookies.get(name);
+        },
+        set(name, value, options) {
+          event.cookies.set(name, value, options);
+        },
+        remove(name, options) {
+          event.cookies.delete(name, options);
+        }
+      }
+    }
+  );
 
-	if (!sessionToken) {
-		event.locals.user = null;
-		event.locals.session = null;
-		return resolve(event);
-	}
+  event.locals.supabase = supabase;
 
-	const { session, user } = await auth.validateSessionToken(sessionToken);
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
 
-	if (session) {
-		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
-	} else {
-		auth.deleteSessionTokenCookie(event);
-	}
+  event.locals.session = session;
 
-	event.locals.user = user;
-	event.locals.session = session;
-	return resolve(event);
+  return resolve(event);
 };
-
-export const handle: Handle = handleAuth; */
