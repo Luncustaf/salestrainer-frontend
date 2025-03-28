@@ -6,12 +6,12 @@
 <header>
   <div class="logo">TalkTra</div>
   <nav>
-    <a href="/demo">Demo</a>
-    <a href="/kontakt">Kontakt</a>
-    <a href="/about">Über uns</a>
 
     {#if session}
       <!-- Wenn der Benutzer eingeloggt ist, zeige Logout an -->
+	  <a href="/demo">Demo</a>
+      <a href="/kontakt">Kontakt</a>
+      <a href="/about">Über uns</a>
       <a href="/logout">📕 Logout</a>
     {:else}
       <!-- Wenn der Benutzer nicht eingeloggt ist, zeige Login und Registrieren an -->
@@ -25,6 +25,7 @@
 </main>
 
 <footer>
+  Impressum - Datenschutz
   <p>© TalkTra – 2025</p>
 </footer>
 
