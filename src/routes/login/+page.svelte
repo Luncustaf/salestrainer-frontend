@@ -12,18 +12,15 @@
   };
 
   const signInWithGoogle = async () => {
-    const redirectUrl = `${window.location.origin}/auth-success`;
-    console.log('Redirecting to:', redirectUrl);
-  
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: redirectUrl
+        redirectTo: 'https://salestrainer.vercel.app/auth-success'
       }
     });
-  
     if (error) alert(error.message);
   };
+  
   
 
 </script>
