@@ -20,9 +20,6 @@
     });
     if (error) alert(error.message);
   };
-  
-  
-
 </script>
 
 <main>
@@ -34,5 +31,10 @@
   <div class="email-box">
     <button on:click={signInWithEmail}>🔐 Login</button>
     <button on:click={signInWithGoogle}>🔓 Login mit Google</button>
+  </div>
+  
+  <!-- Neuer Link für Registrierung -->
+  <div class="register-link">
+    <p>Noch kein Account? <a href="/register">Hier registrieren</a></p>
   </div>
 </main>
