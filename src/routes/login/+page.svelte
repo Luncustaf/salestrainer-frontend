@@ -12,14 +12,19 @@
   };
 
   const signInWithGoogle = async () => {
+    const redirectUrl = `${window.location.origin}/auth-success`;
+    console.log('Redirecting to:', redirectUrl);
+  
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/auth-success`
+        redirectTo: redirectUrl
       }
     });
+  
     if (error) alert(error.message);
   };
+  
 
 </script>
 
