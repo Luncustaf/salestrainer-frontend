@@ -1,36 +1,25 @@
-<header>
-  <div class="logo">TalkTra</div>
-  <nav>
-    <a href="/contact">Kontakt</a>
-    <a href="/login">Login</a>
-  </nav>
-</header>
+<script>
+  import "../app.css"; // falls du globale Styles verwendest
+</script>
 
-<main>
-  <slot />
-</main>
+<div class="wrapper">
+  <header>
+    <div class="logo">TalkTra</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/login">Login</a>
+      <a href="/register">Registrieren</a>
+    </nav>
+  </header>
 
-<style>
-  header {
-    background-color: #333;
-    color: white;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  <main>
+    <slot />
+  </main>
 
-  nav a {
-    color: white;
-    margin-left: 1rem;
-    text-decoration: none;
-  }
-
-  nav a:hover {
-    text-decoration: underline;
-  }
-
-  main {
-    padding-top: 60px; /* Platz für fixierten Header, falls nötig */
-  }
-</style>
+  <footer>
+    <div>
+      <a href="#">Impressum</a> · <a href="#">Datenschutz</a>
+    </div>
+    <div>© Talktra – 2025</div>
+  </footer>
+</div>
