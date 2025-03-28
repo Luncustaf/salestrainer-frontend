@@ -12,7 +12,12 @@
   };
 
   const signInWithGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/login`
+      }
+    });
     if (error) alert(error.message);
   };
 </script>
@@ -22,4 +27,4 @@
 <input type="email" bind:value={email} placeholder="E-Mail" />
 <input type="password" bind:value={password} placeholder="Passwort" />
 <button on:click={signInWithEmail}>🔐 Login</button>
-<button on:click={signInWithGoogle}>🔓 Mit Google anmelden</button>
+<button on:click={signInWithGoogle}>🔓 Login mit Google</button>
