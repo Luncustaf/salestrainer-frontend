@@ -31,17 +31,14 @@
 
   <form on:submit|preventDefault={signUp}>
     <div>
-      <label for="email">E-Mail</label>
       <input type="email" id="email" bind:value={email} placeholder="E-Mail" required />
     </div>
 
     <div>
-      <label for="password">Passwort</label>
       <input type="password" id="password" bind:value={password} placeholder="Passwort" required />
     </div>
 
     <div>
-      <label for="passwordConfirm">Passwort bestätigen</label>
       <input
         type="password"
         id="passwordConfirm"
@@ -61,46 +58,3 @@
   <p>Bereits ein Konto? <a href="/login">Login</a></p>
 </main>
 
-<style>
-  main {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 2rem;
-    text-align: center;
-  }
-
-  form div {
-    margin-bottom: 1rem;
-  }
-
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
-  }
-
-  input {
-    width: 100%;
-    padding: 0.7rem;
-    font-size: 1rem;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-  }
-
-  button {
-    background-color: #007aff;
-    color: white;
-    padding: 0.7rem 1.5rem;
-    font-size: 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    border: none;
-  }
-
-  button:hover {
-    background-color: #005bb5;
-  }
-
-  p {
-    margin-top: 1rem;
-  }
-</style>
