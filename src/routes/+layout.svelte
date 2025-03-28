@@ -1,20 +1,24 @@
-<script>
-  import "../app.css"; // falls du globale Styles verwendest
+<script lang="ts">
   import { supabase } from '$lib/supabaseClient';
+  import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
-  import { goto } from '$app/navigation'; // Importiere goto für Weiterleitung
 
-  let session;
+  let session = null;
 
+  // Check session on initial load
   onMount(async () => {
-    // Session beim Laden holen
     const { data, error } = await supabase.auth.getSession();
     session = data?.session;
+
+    // Listen for changes in session
+    supabase.auth.onAuthStateChange((event, sessionData) => {
+      session = sessionData;
+    });
   });
 
   const logout = async () => {
-    await supabase.auth.signOut(); // Abmelden
-    goto('/login'); // Nach dem Logout zur Login-Seite weiterleiten
+    await supabase.auth.signOut();
+    goto('/login');
   };
 </script>
 
@@ -26,7 +30,7 @@
       <a href="/contact">Kontakt</a>
       <a href="/about">Über uns</a>
       {#if session}
-        <a href="#" on:click={logout}>Logout</a> <!-- Fixe den Logout-Link -->
+        <a href="#" on:click={logout}>Logout</a>
       {:else}
         <a href="/login">Login</a>
         <a href="/register">Registrieren</a>
